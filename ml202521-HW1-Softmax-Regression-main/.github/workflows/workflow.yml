@@ -1,0 +1,37 @@
+name: HW checker
+
+on: push
+
+jobs:
+  check-hw:
+    name: HW check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Code Checkout
+        uses: actions/checkout@v2
+        
+      - name: Set up Python
+        uses: actions/setup-python@v5 
+        with:
+          python-version: '3.10'
+          
+      - name: Install Libs
+        run: pip install -r requirements.txt
+        shell: bash
+      
+      - name: Run tests
+        run: |
+          python run.py unittest softmax
+          python run.py unittest ohe
+          python run.py unittest scaler
+          python run.py unittest predict_proba
+          python run.py unittest predict
+          python run.py unittest loss
+          python run.py unittest grad
+          python run.py unittest step
+          python run.py unittest fit
+          python run.py grade classifier       
+        shell: bash
+        env:
+          CHECKER: true
+          DATASET_TOKEN: ${{ secrets.DATASET_TOKEN }}
