@@ -1,0 +1,30 @@
+name: HW checker
+
+on: push
+
+jobs:
+  check-hw:
+    name: HW check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Code Checkout
+        uses: actions/checkout@v2
+        
+      - name: Set up Python
+        uses: actions/setup-python@v5 
+        with:
+          python-version: '3.10'
+          
+      - name: Install Libs
+        run: pip install -r requirements.txt
+        shell: bash
+      
+      - name: Run tests
+        run: |
+          python run.py unittest random_forest
+          python run.py unittest blending
+          python run.py unittest stacking
+          python run.py unittest boosting
+        shell: bash
+        env:
+          CHECKER: true
